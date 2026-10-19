@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<!-- 
+================================================================================
+  आधार फाइल नाम: चुपा 100% मास्टर बेस (BASE ARCHITECTURE V14.0 - CLOUD UNIFIED)
+  स्थिति: 100% आधिकारिक स्थायी बेस फाइल (PERMANENT MASTER BASE)
+  सुरक्षा: Sub-collection Scaling Guard + IndexedDB + Zero-Glitch Failsafe Cache
+  प्राइवेसी: पूर्ण व्यावसायिक छलावरण (Zero Crypto / No External Branding)
+  मॉड्यूल: चुपा GK ज्ञान डेस्क + डायनामिक टीचर्स हब + अखंड लेज़र + रोल-बेस्ड प्रोफ़ाइल
+================================================================================
+-->
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#075c43">
+<title>चुपाकाबरा खाता — 100% अखंड डिजिटल गद्दी</title>
+
+<!-- Fonts & Third-party Libraries -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Noto+Sans+Devanagari:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+<!-- एक्सटर्नल CSS फ़ाइल लिंक -->
+<link rel="stylesheet" href="style.css">
+
+<!-- PWA Manifest लिंक -->
+<link rel="manifest" href="manifest.json">
+</head>
+<body>
+
+<div id="singleApp">
+  <header class="sa-top">
+    <div class="sa-brand" onclick="openProfileDrawer()">
+      <img class="sa-logo" id="saTopLogoImg" src="logo.png" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><circle cx=\'50\' cy=\'50\' r=\'45\' fill=\'%23075c43\'/><text x=\'50\' y=\'62\' font-size=\'40\' fill=\'white\' text-anchor=\'middle\'>🐉</text></svg>'" alt="Logo">
+      <div>
+        <div class="sa-title" id="saShopTitle">मेरी दुकान का खाता</div>
+        <div class="sa-sub" id="saAuthSub">सिंगल स्क्रीन गद्दी • 100% अखंड</div>
+      </div>
+    </div>
+    <div class="header-actions" style="display:flex;align-items:center;gap:6px;">
+      <button class="sa-top-btn" type="button" onclick="openProfileDrawer()">👤 प्रोफाइल</button>
+      <div class="sa-vault" id="saVault" onclick="saOpen('buildingB')">🪙 0.00</div>
+    </div>
+  </header>
+
+  <main id="singleHome" class="sa-home">
+    <!-- स्थिर बैलेंस कार्ड्स -->
+    <div class="sa-balance">
+      <div>
+        <small>लेना है (बाज़ार बाकी)</small>
+        <strong id="saGet" style="color:var(--red);">₹0</strong>
+      </div>
+      <div>
+        <small>देना है (जमा/आवक)</small>
+        <strong id="saGive" style="color:var(--green);">₹0</strong>
+      </div>
+    </div>
+
+    <!-- स्वाइप इंडिकेटर डॉट्स -->
+    <div class="chupa-dots-bar">
+      <div class="chupa-dot active" id="dot1"></div>
+      <div class="chupa-dot" id="dot2"></div>
+      <span style="font-size:9.5px;color:var(--muted);font-weight:800;margin-left:4px;" id="pageLabel">पेज 1/2</span>
+    </div>
+
+    <!-- स्वाइप होने वाला 6-कार्ड कैरोसेल -->
+    <div class="chupa-carousel-viewport" id="dashCarousel" onscroll="handleDashScroll()">
+      
+      <!-- स्लाइड 1: कोर 6 कार्ड्स -->
+      <div class="chupa-slide">
+        <div class="sa-grid">
+          <button class="sa-btn" onclick="saOpen('customer')">
+            <span class="sa-ico">👤</span>
+            <b>ग्राहक खाता</b>
+            <small>उधार / जमा दर्ज करें</small>
+          </button>
+          <button class="sa-btn" onclick="saOpen('supplier')">
+            <span class="sa-ico">🤝</span>
+            <b>व्यापारी खाता</b>
+            <small>थोक विक्रेता बहीखाता</small>
+          </button>
+          <button class="sa-btn" onclick="saOpen('report')">
+            <span class="sa-ico">📊</span>
+            <b>हिसाब रिपोर्ट</b>
+            <small>कस्टम तारीख, हफ्ता, महीना</small>
+          </button>
+          <button class="sa-btn" onclick="saOpen('expense')">
+            <span class="sa-ico">🪙</span>
+            <b>गद्दी रोज़नामचा</b>
+            <small>दुकान व घरेलू खर्च</small>
+          </button>
+          <button class="sa-btn" onclick="saOpen('clinical')">
+            <span class="sa-ico">🩺</span>
+            <b>Clinical Desk</b>
+            <small>कस्टम ℞ पर्चा, विवरण</small>
+          </button>
+          <button class="sa-btn" onclick="saOpen('pharmacy')">
+            <span class="sa-ico">💊</span>
+            <b>फार्मेसी काउंटर</b>
+            <small>दवा, बैच, मात्रा व पर्ची</small>
+          </button>
+        </div>
+      </div>
+
+      <!-- स्लाइड 2: व्यापार, सेवाएँ व नॉलेज डेस्क -->
+      <div class="chupa-slide">
+        <div class="sa-grid">
+          <button class="sa-btn" onclick="saOpen('billing')">
+            <span class="sa-ico">🛒</span>
+            <b>काउंटर बिलिंग</b>
+            <small>कच्चा / GST, A4 व रोल पर्चा</small>
+          </button>
+          <button class="sa-btn" onclick="saOpen('insurance')">
+            <span class="sa-ico">🛡️</span>
+            <b>बीमा व लोन</b>
+            <small>प्रमाणित PoSP सेवा</small>
+          </button>
+          <button class="sa-btn" onclick="saOpen('buildingB')">
+            <span class="sa-ico">🔐</span>
+            <b>अखंड लेज़र डेस्क</b>
+            <small>प्रूफ़-ऑफ़-पेपर (0.10 🪙)</small>
+          </button>
+          <button class="sa-btn" onclick="saOpen('chupaGk')">
+            <span class="sa-ico">📖</span>
+            <b>चुपा GK ज्ञान डेस्क</b>
+            <small>स्पीड टेस्ट (≥80% = 0.10 🪙)</small>
+          </button>
+          <button class="sa-btn" onclick="saOpen('videoDesk')">
+            <span class="sa-ico">📺</span>
+            <b>स्मार्ट पाठशाला</b>
+            <small>डिजिटल क्लासरूम व टीचर्स हब</small>
+          </button>
+          <button class="sa-btn" onclick="saOpen('gov')">
+            <span class="sa-ico">🏛️</span>
+            <b>सरकारी सेवा व IP</b>
+            <small>12 पोर्टल व कॉपीराइट</small>
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- नीचे की खाली जगह: मस्कॉट QR बैनर (क्लिक पर QR खुलेगा) -->
+    <div class="chupa-mascot-card" onclick="openQR()">
+      <div class="chupa-mascot-unit">
+        <img class="chupa-mascot-dragon" src="logo.png" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><circle cx=\'50\' cy=\'50\' r=\'45\' fill=\'%23075c43\'/><text x=\'50\' y=\'64\' font-size=\'42\' fill=\'white\' text-anchor=\'middle\'>🐉</text></svg>'" alt="Logo">
+        <div class="chupa-hand-qr">
+          <span style="font-size:6px;font-weight:900;color:#075c43;line-height:1;">QR</span>
+          <span style="font-size:14px;color:#0f172a;line-height:1;">▣</span>
+        </div>
+      </div>
+      <div class="chupa-banner-center">
+        <div class="chupa-banner-title">चुपाकाबरा खाता</div>
+        <div class="chupa-banner-tag">मेरा QR • मेरी पहचान</div>
+      </div>
+      <div class="chupa-banner-btn">
+        <span>👁️</span> <span>QR देखें</span>
+      </div>
+    </div>
+  </main>
+
+  <section id="singlePage">
+    <div class="sa-page-head">
+      <button class="sa-back" onclick="saBack()">← मुख्य स्क्रीन</button>
+      <div><div class="sa-page-title" id="saPageTitle">-</div></div>
+    </div>
+    <div id="saPageContent"></div>
+  </section>
+</div>
+
+<!-- ================= MODALS ================= -->
+<div class="modal" id="customerModal"><div class="box">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+    <h2 style="font-size:16px;font-weight:900;color:var(--primary);" id="customerModalTitle">＋ नया खाता जोड़ें</h2>
+    <button type="button" class="btn-cancel" style="width:28px;height:28px;border-radius:50%;padding:0;" onclick="closeModal('customerModal')">✕</button>
+  </div>
+  <input type="hidden" id="cPartyTypeHidden" value="customer">
+  <div style="margin-bottom:10px;">
+    <label style="font-size:11px;font-weight:800;color:var(--muted);display:block;margin-bottom:3px;">नाम (व्यक्ति या फर्म) *</label>
+    <input id="cName" class="d-input" placeholder="उदा. रमेश कुमार">
+  </div>
+  <div style="margin-bottom:10px;">
+    <label style="font-size:11px;font-weight:800;color:var(--muted);display:block;margin-bottom:3px;">मोबाइल नंबर (10 अंक) *</label>
+    <input id="cPhone" class="d-input" type="tel" inputmode="numeric" maxlength="10" placeholder="9876543210">
+  </div>
+  <div class="modalrow">
+    <button type="button" class="btn-cancel" onclick="closeModal('customerModal')">रद्द करें</button>
+    <button type="button" class="btn-save" onclick="saveCustomer()">खाता खोलें ✓</button>
+  </div>
+</div></div>
+
+<div class="modal" id="txModal"><div class="box">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+    <h2 id="txTitle" style="font-size:16px;font-weight:900;color:var(--primary);">उधार दर्ज करें</h2>
+    <button type="button" class="btn-cancel" style="width:28px;height:28px;border-radius:50%;padding:0;" onclick="closeModal('txModal')">✕</button>
+  </div>
+  <input type="hidden" id="txEditingIndex" value="-1">
+  <div style="margin-bottom:10px;">
+    <label style="font-size:11px;font-weight:800;color:var(--muted);display:block;margin-bottom:3px;">राशि (₹) *</label>
+    <input id="txAmount" class="d-input" type="number" inputmode="decimal" placeholder="₹0.00">
+  </div>
+  <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:6px;margin-bottom:8px;">
+    <div>
+      <label style="font-size:10.5px;color:var(--muted);font-weight:700;">विवरण</label>
+      <input id="txNote" class="d-input" placeholder="उदा. चीनी 5kg या बिल #12">
+    </div>
+    <div>
+      <label style="font-size:10.5px;color:var(--muted);font-weight:700;" id="txDateLabel">दिनांक</label>
+      <input id="txDate" type="date" class="d-input" style="background:#fff;">
+    </div>
+  </div>
+  <div style="margin-bottom:10px;background:#f8fafc;padding:8px 10px;border-radius:12px;border:1px dashed var(--line);">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+      <label style="font-size:10.5px;font-weight:800;color:var(--muted);">📷 बिल / पर्ची फोटो (वैकल्पिक - IndexedDB सुरक्षित)</label>
+      <button type="button" id="txRemoveImgBtn" style="display:none;border:0;background:none;color:var(--red);font-size:10px;font-weight:800;" onclick="clearTxImage()">हटाएं ✕</button>
+    </div>
+    <input type="file" id="txBillFile" accept="image/*" class="d-input" style="padding:4px;height:36px;font-size:11px;" onchange="handleBillImageUpload(event)">
+    <div id="txImgPreviewBox" style="display:none;margin-top:6px;text-align:center;">
+      <img id="txImgPreview" style="max-height:80px;border-radius:8px;border:1px solid #cbd5e1;object-fit:cover;">
+    </div>
+  </div>
+  <div class="modalrow">
+    <button type="button" class="btn-cancel" onclick="closeModal('txModal')">रद्द करें</button>
+    <button type="button" class="btn-save" id="txSaveBtn" onclick="saveTx()">हिसाब सेव करें ✓</button>
+  </div>
+</div></div>
+
+<div class="modal" id="billViewerModal"><div class="box" style="text-align:center;">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+    <h3 style="font-size:14px;font-weight:900;color:var(--primary);">🧾 बिल / डायरी पर्ची फोटो</h3>
+    <button type="button" class="btn-cancel" style="width:28px;height:28px;border-radius:50%;padding:0;" onclick="closeModal('billViewerModal')">✕</button>
+  </div>
+  <div style="max-height:65vh;overflow:auto;border-radius:12px;background:#000;display:flex;align-items:center;justify-content:center;">
+    <img id="viewerImage" style="max-width:100%;max-height:60vh;object-fit:contain;">
+  </div>
+  <div class="modalrow" style="margin-top:12px;">
+    <button type="button" class="btn-cancel" onclick="closeModal('billViewerModal')" style="grid-column:1/-1;">बंद करें</button>
+  </div>
+</div></div>
+
+<div class="modal" id="rxCustomModal"><div class="box">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+    <h3 style="font-size:15px;font-weight:900;color:var(--primary);" id="rxCustomModalTitle">＋ नया आइटम जोड़ें</h3>
+    <button type="button" class="btn-cancel" style="width:28px;height:28px;border-radius:50%;padding:0;" onclick="closeModal('rxCustomModal')">✕</button>
+  </div>
+  <input type="hidden" id="rxCustomTypeHidden" value="c">
+  <div style="margin-bottom:12px;">
+    <label style="font-size:11px;font-weight:800;color:var(--muted);display:block;margin-bottom:4px;">विवरण / नाम दर्ज करें:</label>
+    <input id="rxCustomInputText" class="d-input" placeholder="उदा. कंधे का दर्द, विशेष थेरेपी...">
+  </div>
+  <div class="modalrow">
+    <button type="button" class="btn-cancel" onclick="closeModal('rxCustomModal')">रद्द करें</button>
+    <button type="button" class="btn-save" onclick="saveCustomRxChip()">पर्चे में जोड़ें ✓</button>
+  </div>
+</div></div>
+
+<!-- ================= 20. एकीकृत मुख्य प्रोफाइल व सेटिंग्स मोडल ================= -->
+<div class="modal" id="settingsModal"><div class="box">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+    <h2 style="font-size:16px;font-weight:900;color:var(--primary);">👤 मुख्य प्रोफाइल व व्यवसाय डेस्क</h2>
+    <button type="button" class="btn-cancel" style="width:28px;height:28px;border-radius:50%;padding:0;" onclick="closeModal('settingsModal')">✕</button>
+  </div>
+
+  <!-- Google Auth व स्टेटस -->
+  <div style="background:#f1f5f9;border:1px solid #cbd5e1;border-radius:14px;padding:12px;margin-bottom:12px;">
+    <div style="font-size:11px;font-weight:800;color:#475569;margin-bottom:6px;">Google खाता बैकअप व क्लाउड सिंक:</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="font-size:22px;">🌐</span>
+        <div>
+          <div style="font-size:11.5px;font-weight:800;" id="authUserName">अनलिमिटेड सब-कलेक्शन सिंक सक्रिय</div>
+          <div style="font-size:9.5px;color:#64748b;" id="authUserEmail">डेटा फ़ोन व क्लाउड में पूर्णतया सुरक्षित है</div>
+        </div>
+      </div>
+      <button type="button" id="googleAuthBtn" onclick="handleGoogleAuth()" style="border:1px solid #cbd5e1;background:#fff;border-radius:8px;padding:6px 10px;font-size:11px;font-weight:800;display:flex;align-items:center;gap:4px;">
+        <span>G</span> <span>लॉगिन</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- मुख्य भूमिका चयन -->
+  <div style="margin-bottom:12px;background:#eaf5ef;padding:10px;border-radius:12px;border:1.5px solid var(--primary);">
+    <label style="font-size:11px;font-weight:900;color:var(--primary);display:block;margin-bottom:4px;">मेरी मुख्य भूमिका / पेशा चुनें *</label>
+    <select id="userRoleSelect" class="d-input" style="font-weight:800;background:#fff;" onchange="toggleRoleFields(this.value)">
+      <option value="merchant">🛒 दुकानदार / व्यापारी (Merchant)</option>
+      <option value="doctor">🩺 डॉक्टर / थेरेपिस्ट (Clinical Desk)</option>
+      <option value="pharmacist">💊 फार्मासिस्ट (Medical & Pharmacy)</option>
+      <option value="teacher">🎓 शिक्षक / संकाय (Smart Pathshala)</option>
+      <option value="student">👤 सामान्य ग्राहक / विद्यार्थी (Student)</option>
+    </select>
+  </div>
+
+  <!-- सेक्शन: दुकानदार -->
+  <div id="roleSecMerchant">
+    <div style="background:#f0fdf4;border:1px dashed var(--primary);border-radius:14px;padding:10px;margin-bottom:10px;">
+      <label style="font-size:11px;font-weight:800;color:var(--primary);display:block;margin-bottom:4px;">📷 दुकान का लोगो (IndexedDB सुरक्षित)</label>
+      <input type="file" id="shopLogoInput" accept="image/*" class="d-input" style="padding:4px;height:36px;font-size:11px;" onchange="handleLogoUpload(event)">
+      <div style="display:flex;align-items:center;gap:10px;margin-top:6px;">
+        <img id="logoPreviewImg" style="width:36px;height:36px;border-radius:8px;border:1px solid #cbd5e1;object-fit:cover;display:none;">
+        <button type="button" id="removeLogoBtn" style="display:none;border:0;background:none;color:var(--red);font-size:11px;font-weight:800;" onclick="removeCustomLogo()">लोगो हटाएं ✕</button>
+      </div>
+    </div>
+    <div style="margin-bottom:8px;"><label style="font-size:10.5px;font-weight:800;color:var(--muted);display:block;margin-bottom:2px;">दुकानदार का नाम</label><input id="profMerchantName" class="d-input" placeholder="उदा. सत्यप्रकाश सिंह"></div>
+    <div style="margin-bottom:8px;"><label style="font-size:10.5px;font-weight:800;color:var(--muted);display:block;margin-bottom:2px;">दुकान का नाम *</label><input id="profShopName" class="d-input" placeholder="मेरी दुकान का खाता"></div>
+    <div style="margin-bottom:8px;"><label style="font-size:10.5px;font-weight:800;color:var(--muted);display:block;margin-bottom:2px;">दुकान का पूरा पता</label><input id="profAddress" class="d-input" placeholder="मेन बाज़ार, उत्तर प्रदेश"></div>
+    <div style="margin-bottom:8px;"><label style="font-size:10.5px;font-weight:800;color:var(--muted);display:block;margin-bottom:2px;">संपर्क फ़ोन नंबर</label><input id="profPhone" class="d-input" type="tel" placeholder="9876543210"></div>
+    <div style="margin-bottom:8px;"><label style="font-size:10.5px;font-weight:800;color:var(--muted);display:block;margin-bottom:2px;">UPI भुगतान ID</label><input id="profUpi" class="d-input" placeholder="merchant@upi"></div>
+    <div style="margin-bottom:8px;"><label style="font-size:10.5px;font-weight:800;color:var(--muted);display:block;margin-bottom:2px;">GSTIN (15 अंक)</label><input id="profGst" class="d-input" placeholder="09AAAAA0000A1Z5"></div>
+  </div>
+
+  <!-- सेक्शन: डॉक्टर -->
+  <div id="roleSecDoctor" style="display:none;">
+    <div style="margin-bottom:8px;"><label style="font-size:10.5px;font-weight:800;color:var(--muted);display:block;margin-bottom:2px;">क्लिनिक / सेंटर का नाम *</label><input id="setClinicName" class="d-input" placeholder="आरोग्य रिहैब व थेरेपी क्लिनिक"></div>
+    <div style="margin-bottom:8px;"><label style="font-size:10.5px;font-weight:800;color:var(--muted);display:block;margin-bottom:2px;">डॉक्टर नाम व डिग्री *</label><input id="setDocName" class="d-input" placeholder="डॉ. आर. पी. सिंह (B.P.T, न्यूरोथेरेपिस्ट)"></div>
+    <div style="margin-bottom:8px;"><label style="font-size:10.5px;font-weight:800;color:var(--muted);display:block;margin-bottom:2px;">पंजीकरण सं. (RMP / Registration No.) *</label><input id="setDocReg" class="d-input" placeholder="UP-RMP-2026/A"></div>
+    <div style="margin-bottom:8px;"><label style="font-size:10.5px;font-weight:800;color:var(--muted);display:block;margin-bottom:2px;">क्लिनिक पता</label><input id="setClinicAddress" class="d-input" placeholder="मेन चौराहा, उत्तर प्रदेश"></div>
+    <div style="margin-bottom:8px;"><label style="font-size:10.5px;font-weight:800;color:var(--muted);display:block;margin-bottom:2px;">क्लिनिक हेल्पलाइन फ़ोन</label><input id="setClinicPhone" class="d-input" type="tel" placeholder="9369913187"></div>
+    <div style="margin-bottom:8px;"><label style="font-size:10.5px;font-weight:800;color:var(--muted);display:block;margin-bottom:2px;">Google Maps लोकेशन लिंक</label><input id="setClinicMap" class="d-input" placeholder="https://maps.google.com/..."></div>
+  </div>
+
+  <!-- सेक्शन: फार्मासिस्ट -->
+  <div id="roleSecPharmacist" style="display:none;">
+    <div style="margin-bottom:8px;"><label style="font-size:10.5px;font-weight:800;color:var(--muted);display:block;margin-bottom:2px;">मेडिकल स्टोर का नाम *</label><input id="setPhName" class="d-input" placeholder="आरोग्य मेडिकल व फार्मेसी"></div>
+    <div style="margin-bottom:8px;"><label style="font-size:10.5px;font-weight:800;color:var(--muted);display:block;margin-bottom:2px;">ड्रग लाइसेंस सं. (D.L. No.) *</label><input id="setPhDl" class="d-input" placeholder="UP-DL-8942"></div>
+    <div style="margin-bottom:8px;"><label style="font-size:10.5px;font-weight:800;color:var(--muted);display:block;margin-bottom:2px;">मेडिकल स्टोर का पता</label><input id="setPhAddress" class="d-input" placeholder="निकट ज़िला अस्पताल"></div>
+    <div style="margin-bottom:8px;"><label style="font-size:10.5px;font-weight:800;color:var(--muted);display:block;margin-bottom:2px;">संपर्क फ़ोन</label><input id="setPhPhone" class="d-input" type="tel" placeholder="9369913187"></div>
+    <div style="margin-bottom:8px;"><label style="font-size:10.5px;font-weight:800;color:var(--muted);display:block;margin-bottom:2px;">Google Maps लिंक</label><input id="setPhMap" class="d-input" placeholder="https://maps.google.com/..."></div>
+  </div>
+
+  <!-- सेक्शन: शिक्षक -->
+  <div id="roleSecTeacher" style="display:none;">
+    <div style="margin-bottom:8px;"><label style="font-size:10.5px;font-weight:800;color:var(--muted);display:block;margin-bottom:2px;">शिक्षक / गुरुजी का पूरा नाम *</label><input id="setTeacherName" class="d-input" placeholder="उदा. रविंद्र प्रताप सिंह"></div>
+    <div style="margin-bottom:8px;"><label style="font-size:10.5px;font-weight:800;color:var(--muted);display:block;margin-bottom:2px;">संकाय / मुख्य विषय *</label><input id="setTeacherSubject" class="d-input" placeholder="सामान्य विज्ञान (Science)"></div>
+    <div style="margin-bottom:8px;"><label style="font-size:10.5px;font-weight:800;color:var(--muted);display:block;margin-bottom:2px;">शिक्षक UPI ID (कमीशन / पेआउट हेतु) *</label><input id="setTeacherUpi" class="d-input" placeholder="teacher@upi"></div>
+    <div style="margin-bottom:8px;"><label style="font-size:10.5px;font-weight:800;color:var(--muted);display:block;margin-bottom:2px;">पहचान प्रमाण (ID Proof / Voter ID / Registration) *</label><input id="setTeacherIdProof" class="d-input" placeholder="[पहचान प्रमाण संख्या / वोटर आईडी]"></div>
+    <div style="margin-bottom:8px;"><label style="font-size:10.5px;font-weight:800;color:var(--muted);display:block;margin-bottom:2px;">शिक्षक हेल्पलाइन मोबाइल नंबर *</label><input id="setTeacherPhone" class="d-input" type="tel" placeholder="9876543210"></div>
+  </div>
+
+  <!-- सेक्शन: सामान्य विद्यार्थी -->
+  <div id="roleSecStudent" style="display:none;">
+    <div style="padding:10px;background:#f8fafc;border-radius:10px;font-size:11.5px;color:#64748b;line-height:1.5;">
+      💡 आप सामान्य विद्यार्थी/ग्राहक मोड में हैं। आप सभी कक्षाओं के वीडियो, नोट्स और टेस्ट का निःशुल्क लाभ ले सकते हैं।
+    </div>
+  </div>
+
+  <!-- बैकअप टूल्स -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:12px;">
+    <button type="button" class="btn-cancel" style="background:#f0fdf4;border:1px solid #bbf7d0;color:#15803d;font-size:11px;" onclick="downloadBackupJSON()">📥 संपूर्ण बैकअप</button>
+    <button type="button" class="btn-cancel" style="background:#eff6ff;border:1px solid #bfdbfe;color:#1d4ed8;font-size:11px;" onclick="triggerRestoreJSON()">📤 रीस्टोर</button>
+  </div>
+  <input type="file" id="jsonFileInput" accept=".json" style="display:none;" onchange="handleRestoreFile(event)">
+
+  <button type="button" class="btn-cancel" style="width:100%;margin-top:6px;background:#fff1f2;border:1px solid #fecdd3;color:var(--red);font-size:11px;" onclick="openRecycleBin()">
+    🗑️ रीसायकल बिन
+  </button>
+
+  <div class="modalrow" style="margin-top:12px;">
+    <button type="button" class="btn-cancel" onclick="closeModal('settingsModal')">रद्द करें</button>
+    <button type="button" class="btn-save" onclick="saveSettingsData()">सुरक्षित करें ✓</button>
+  </div>
+</div></div>
+
+<!-- ================= 21. शिक्षक क्लास सबमिशन व UPI शुल्क मोडल ================= -->
+<div class="modal" id="teacherUploadModal"><div class="box">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+    <h2 style="font-size:16px;font-weight:900;color:var(--primary);">🎓 नई क्लास सबमिट करें (क्लाउड गेटवे)</h2>
+    <button type="button" class="btn-cancel" style="width:28px;height:28px;border-radius:50%;padding:0;" onclick="closeModal('teacherUploadModal')">✕</button>
+  </div>
+
+  <div style="background:#f8fafc;border:1px solid #cbd5e1;border-radius:12px;padding:10px;margin-bottom:10px;">
+    <div style="font-size:11px;font-weight:800;color:var(--primary);">शिक्षक विवरण:</div>
+    <div style="font-size:12px;font-weight:900;" id="tuTeacherSummary">--</div>
+  </div>
+
+  <div style="margin-bottom:8px;">
+    <label style="font-size:10.5px;font-weight:800;color:var(--muted);display:block;margin-bottom:2px;">क्लास का शीर्षक (Title) *</label>
+    <input id="tuClassTitle" class="d-input" placeholder="उदा. भाग 1: मानव रोग एवं रोकथाम">
+  </div>
+  <div style="margin-bottom:8px;">
+    <label style="font-size:10.5px;font-weight:800;color:var(--muted);display:block;margin-bottom:2px;">यूट्यूब / MP4 वीडियो लिंक *</label>
+    <input id="tuVideoUrl" class="d-input" placeholder="https://youtube.com/watch?v=... या Shorts लिंक">
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px;">
+    <div>
+      <label style="font-size:10.5px;font-weight:800;color:var(--muted);display:block;margin-bottom:2px;">अवधि (Time) *</label>
+      <input id="tuDuration" class="d-input" placeholder="15:00">
+    </div>
+    <div>
+      <label style="font-size:10.5px;font-weight:800;color:var(--muted);display:block;margin-bottom:2px;">संबद्ध टेस्ट फ़ाइल</label>
+      <input id="tuTestFile" class="d-input" value="weekly_w01.json">
+    </div>
+  </div>
+  <div style="margin-bottom:12px;">
+    <label style="font-size:10.5px;font-weight:800;color:var(--muted);display:block;margin-bottom:2px;">PDF नोट्स लिंक (वैकल्पिक)</label>
+    <input id="tuNotesUrl" class="d-input" placeholder="#" value="#">
+  </div>
+
+  <!-- आधिकारिक प्लेटफ़ॉर्म शुल्क व QR -->
+  <div style="background:#fef3c7;border:1.5px dashed #b45309;border-radius:14px;padding:12px;text-align:center;margin-bottom:12px;">
+    <div style="font-size:11px;font-weight:900;color:#92400e;">★ आधिकारिक प्लेटफ़ॉर्म अपलोड शुल्क: ₹1,000 ★</div>
+    <p style="font-size:10px;color:#78350f;margin:2px 0 8px;">नीचे दिए गए QR या UPI ID पर भुगतान करके 12 अंकों का UTR नंबर दर्ज करें:</p>
+    
+    <div id="tuQrContainer" style="background:#fff;padding:6px;display:inline-block;border-radius:10px;border:1px solid #cbd5e1;"></div>
+    <div style="font-size:11px;font-weight:900;color:#075c43;margin-top:6px;" id="tuUpiDisplay">UPI: merchant@upi</div>
+
+    <div style="margin-top:10px;text-align:left;">
+      <label style="font-size:10.5px;font-weight:900;color:#92400e;display:block;margin-bottom:2px;">12 अंकों का बैंक UPI Ref / UTR सं. *</label>
+      <input id="tuUtrNumber" class="d-input" maxlength="12" placeholder="उदा. 412345678901" style="background:#fff;font-weight:800;letter-spacing:1px;">
+    </div>
+  </div>
+
+  <div class="modalrow">
+    <button type="button" class="btn-cancel" onclick="closeModal('teacherUploadModal')">रद्द करें</button>
+    <button type="button" class="btn-save" style="background:#075c43;" onclick="submitTeacherClassToCloud()">सर्वर पर सबमिट करें 🚀</button>
+  </div>
+</div></div>
+
+<!-- ================= 22. QR व रीसायकल बिन ================= -->
+<div class="modal" id="qrModal"><div class="box" style="text-align:center;">
+  <div style="background:linear-gradient(145deg,#070c14,#040810);border:2px solid #b45309;border-radius:20px;padding:16px;color:#fff;">
+    <div style="font-size:16px;font-weight:900;color:#f59e0b;" id="qrShopTitle">मेरी दुकान का खाता</div>
+    <div style="font-size:11px;color:#38bdf8;margin-top:2px;">★ आधिकारिक मर्चेंट QR पोस्टर ★</div>
+    <div style="background:#fff;border-radius:14px;padding:8px;display:inline-block;margin:12px auto;box-shadow:0 10px 25px rgba(0,0,0,0.5);">
+      <div id="qrCanvasContainer" style="display:flex;justify-content:center;align-items:center;"></div>
+    </div>
+    <div style="font-size:11.5px;font-weight:800;color:#fde047;" id="qrUpiText">UPI सेट करें</div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:12px;">
+    <button type="button" class="btn-save" style="background:#0284c7;height:38px;font-size:11.5px;" onclick="downloadQrImage()">📥 QR डाउनलोड</button>
+    <button type="button" class="btn-save" style="background:#b45309;height:38px;font-size:11.5px;" onclick="printQrStandee()">🖨️ स्टैंडी प्रिंट</button>
+  </div>
+  <div class="modalrow" style="margin-top:6px;">
+    <button type="button" class="btn-cancel" onclick="closeModal('qrModal')" style="grid-column:1/-1;">बंद करें</button>
+  </div>
+</div></div>
+
+<div class="modal" id="recycleBinModal"><div class="box">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+    <div>
+      <h2 style="font-size:16px;font-weight:900;color:var(--primary);" id="rbModalTitle">🗑️ रीसायकल बिन</h2>
+      <p style="font-size:10px;color:var(--muted);margin-top:2px;">हटाए गए लेन-देन व खाते</p>
+    </div>
+    <button type="button" onclick="emptyRecycleBin()" style="border:0;background:#fee2e2;color:#ef4444;font-size:10px;font-weight:800;padding:5px 8px;border-radius:8px;">सब साफ़ करें</button>
+  </div>
+  <div id="recycleBinList" style="display:flex;flex-direction:column;gap:8px;max-height:55vh;overflow-y:auto;"></div>
+  <div class="modalrow" style="margin-top:14px;">
+    <button type="button" class="btn-cancel" onclick="closeModal('recycleBinModal')" style="grid-column:1/-1;">बंद करें</button>
+  </div>
+</div></div>
+
+<div class="toast" id="toastMsg"></div>
+<div id="universalPrintArea"></div>
+
+<!-- एक्सटर्नल JS फ़ाइल लिंक -->
+<script src="app.js"></script>
+
+<!-- Service Worker रजिस्ट्रेशन स्क्रिप्ट -->
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js')
+        .then(() => console.log('Service Worker Registered Successfully!'))
+        .catch((err) => console.log('Service Worker Registration Failed:', err));
+    });
+  }
+</script>
+</body>
+</html>
